@@ -21,6 +21,8 @@ creating user and database
 -- Semicolons are important
 CREATE USER pg4e WITH PASSWORD 'secret'; 
 CREATE DATABASE people WITH OWNER admin;
+
+ALTER DATABASE people RENAME TO new_owner_name;
 ```
 
 Connecting to a database on localhost with forced creds
