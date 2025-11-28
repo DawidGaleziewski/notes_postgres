@@ -1,0 +1,2 @@
+1. Setting indexes
+2. CONSTRAINT FOREIGN KEY
