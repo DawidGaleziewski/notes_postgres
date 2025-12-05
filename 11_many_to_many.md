@@ -34,4 +34,13 @@ INSERT INTO student (name, email) VALUES ('Martin Valece', 'martin@ripper.com');
 
 INSERT INTO course (title) VALUES ('SQL');
 INSERT INTO course (title) VALUES ('Python');
+
+-- Insert into middle tab;le
+INSERT INTO member (student_id, course_id, role) VALUES (2,1, 1);
+
+-- reconstructing the daya
+SELECT student.name, student.email, course.title
+    FROM student
+        JOIN member ON member.student_id = student.id
+        JOIN course ON course.id = member.course_id
 ```
