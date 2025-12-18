@@ -1,4 +1,4 @@
-Subqueries are a query inside a query.
+``bqueries are a query inside a query.
 They are not very efficient. But quire convinient
 ```postgresql
 SELECT content FROM comment
@@ -21,5 +21,5 @@ SELECT operation_type, ct FROM (
 	WHERE order_date > NOW() - INTERVAL '30 days'
 	GROUP BY operation_type 
 ) WHERE ct > 10 ORDER BY ct DESC
-
 ```
+``
