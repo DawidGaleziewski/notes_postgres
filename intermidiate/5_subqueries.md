@@ -20,6 +20,5 @@ SELECT operation_type, ct FROM (
 	FROM account_operation
 	WHERE order_date > NOW() - INTERVAL '30 days'
 	GROUP BY operation_type 
-) WHERE ct > 10 ORDER BY ct DESC
+) AS zap WHERE ct > 10 ORDER BY ct DESC
 ```
-``
