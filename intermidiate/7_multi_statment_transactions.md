@@ -28,3 +28,12 @@ INSERT INTO mock_transactions (amount, account_id) VALUES(100, 1);
 -- will commit the transaction changes
 COMMIT;
 ```
+# variables in WITH
+```postgresql
+BEGIN;
+WITH user_d AS (
+    SELECT id, name FROM account WHERE name LIKE '%alk%'
+) 
+SELECT m.* FROM mock_transactions m, user_d WHERE m.account_id = user_d.id;
+ROLLBACK;
+```

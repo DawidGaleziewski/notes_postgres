@@ -85,4 +85,21 @@ INSERT INTO mock_transactions (amount, account_id, uniq) VALUES(-1000, 1, 'b')
 RETURNING *;
 ```
 
+Other examples:
+```postgresql
+CREATE TABLE fav(
+    id SERIAL PRIMARY KEY,
+    hobby VARCHAR(256) NOT NULL,
+    how_much INT NOT NULL,
+    UNIQUE(hobby, how_much)
+);
+
+INSERT INTO fav (hobby, how_much) VALUES('reading', 1), ('box', 1), ('swim', 1);
+
+-- This won't just fail but it will increment the problematic value
+INSERT INTO fav (hobby, how_much) VALUES('box', 1)
+  ON CONFLICT (hobby, how_much)
+  DO UPDATE SET how_much = fav.how_much + 1;
+```
+
 
