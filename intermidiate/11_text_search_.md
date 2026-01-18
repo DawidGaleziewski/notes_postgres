@@ -42,4 +42,23 @@ SELECT upper(content) FROM textfun WHERE content LIKE '%06%';
 SELECT split_part(CONTENT, '/', 3) FROM textfun WHERE content LIKE '%06%';
 SELECT translate(CONTENT, '.com', '.dev') FROM textfun WHERE content LIKE '%06%';
 ```
-11:07
+
+
+Analyzing performance of the script.
+There are huge diffrences when using a b-tree index on text fields depending on query used
+```postgresql
+-- Qickest as this can be using index (about 0.06sek)
+EXPLAIN ANALYZE SELECT * FROM textfun WHERE content LIKE '06%';
+-- This can be 1000 times slower
+EXPLAIN ANALYZE SELECT * FROM textfun WHERE content LIKE '%06%';
+-- ILIKE (ignores case) is realy bad and can be even 3x slower then sequential scan
+EXPLAIN ANALYZE SELECT * FROM textfun WHERE content ILIKE '%06%';
+-- even with sequential scans we can optimize the qyery by LIMIT
+EXPLAIN ANALYZE SELECT * FROM textfun WHERE content ILIKE '%06%' LIMIT 1;
+
+-- IN will use one of few provided options. This is also a index scan
+EXPLAIN ANALYZE SELECT * FROM textfun WHERE CONTENT IN ('https://www.google.com/?id=1000', 'https://www.google.com/?id=1010')
+
+-- subqueries generally will have quite bad performance. However ptoblem here is that we run two scans. First is the seq scan and second one is index scan. So it still won't be to good
+EXPLAIN ANALYZE SELECT * FROM textfun WHERE CONTENT IN (SELECT content FROM textfun WHERE CONTENT LIKE '10%')
+```
